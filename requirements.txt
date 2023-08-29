@@ -3,4 +3,6 @@ prettytable
 streamlit
 requests
 pandas
+pip==23.2.1
+
 
