@@ -59,7 +59,7 @@ def main():
         return sorted(data, key=lambda x: parse_date(x[1]), reverse=True)
 
     base_url = "https://allgovernmentjobs.in/latest-government-jobs"
-    num_pages = 17  # Set the number of pages you want to scrape
+    num_pages = 25  # Set the number of pages you want to scrape
 
     all_data = scrape_all_pages(base_url, num_pages)
 
