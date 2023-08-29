@@ -1,9 +1,4 @@
 import streamlit as st
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-import time
-from datetime import datetime
 from tab1 import main as main_tab1
 from tab2 import main as main_tab2
 
