@@ -21,7 +21,3 @@ elif tab == "Source 2":
 #    main_tab4()
 #elif tab == "Tab 5":
 #    main_tab5()
-
-# Add a button to rerun the app
-if st.button('Rerun App'):
-    st.experimental_rerun()
