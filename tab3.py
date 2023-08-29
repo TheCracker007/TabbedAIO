@@ -77,12 +77,14 @@ def main():
     # Display the data in a Streamlit app
     st.title('Latest Government Jobs')
     
-    # Add a drop-down filter for the 'Education' column
-    education_option = st.selectbox(
-        'Which education level you would like to display?',
-         df_sorted_data['Education'].unique())
+    # Add a drop-down filter for the 'Qualification' column
+    qualification_option = st.selectbox(
+        'Which qualification level you would like to display?',
+         df_sorted_data['Qualification'].unique())
     
     # Filter the DataFrame based on the selected value
-    filtered_df = df_sorted_data[df_sorted_data['Education'] == education_option]
+    filtered_df = df_sorted_data[df_sorted_data['Qualification'] == qualification_option]
     
     st.table(filtered_df)
+
+main()
