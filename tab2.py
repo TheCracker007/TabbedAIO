@@ -64,7 +64,7 @@ def main():
     all_data = scrape_all_pages(base_url, num_pages)
 
     # Filter jobs by education level
-    education_levels = ["B.E/ B.Tech", "Any Degree", "Electronics and Communication Engineering", "10th", "12th"]
+    education_levels = ["B.E/ B.Tech", "Any Degree", "Electronics and Communication Engineering", "10th", "12th", "Intermediate (10+2)"]
     filtered_data = filter_jobs_by_education(all_data, education_levels)
 
     # Clean up the job details
