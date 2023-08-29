@@ -72,7 +72,7 @@ def main():
 
     sorted_data = sort_by_last_date(cleaned_data)
 
-    headers = ["Organization", "Last Date", "Education", "Job Details"]
+    headers = ["Organisation", "Last Date", "Qualification", "Vacancies"]
 
     # Display the data in a Streamlit app
     st.title('Latest Government Jobs')
