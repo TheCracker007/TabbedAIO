@@ -72,7 +72,7 @@ def main():
     sorted_data = sort_by_last_date(cleaned_data)
     
     # Convert sorted_data into a DataFrame
-    df_sorted_data = pd.DataFrame(sorted_data, columns=["Organization", "Last Date", "Education", "Job Details"])
+    df_sorted_data = pd.DataFrame(sorted_data, columns=["Organisation", "Last Date", "Qualification", "Vacancies"])
     
     # Display the data in a Streamlit app
     st.title('Latest Government Jobs')
