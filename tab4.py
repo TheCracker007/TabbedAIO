@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import streamlit as st
 
 def main():
-    st.title("Sarkari Result Latest Jobs")
+    st.title("Latest Notification")
 
     url = 'https://www.sarkariresult.app/latest-jobs/'
     response = requests.get(url)
