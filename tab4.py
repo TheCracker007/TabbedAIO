@@ -44,7 +44,7 @@ def main():
         })
 
     # Sort the jobs by last date in descending order
-    jobs.sort(key=lambda x: x['last_date'], reverse=True)
+    jobs.sort(key=lambda x: x['last_date'] or datetime.max, reverse=True)
 
     # Create the table header
     table = '| Job Title | Number of Posts | Last Date | Link |\n'
