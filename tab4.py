@@ -2,6 +2,9 @@ import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 
+# Streamlit app title
+st.title("Sarkari Result Latest Jobs")
+
 url = 'https://www.sarkariresult.app/latest-jobs/'
 response = requests.get(url)
 html = response.text
@@ -31,4 +34,4 @@ for element in soup.select('ul.su-posts li.su-post')[2:]:
     table += f'| {title} | {num_posts} | {last_date} | {job_link} |\n'
 
 # Display the table in Streamlit
-st.markdown(table)
+st.markdown(table, unsafe_allow_html=True)
