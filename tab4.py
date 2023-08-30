@@ -29,9 +29,9 @@ def main():
         
         # Extract the last date from the job details
         last_date_str = job_details.replace('Last Date:', '').strip()
-        if last_date_str:
+        try:
             last_date = datetime.strptime(last_date_str, '%d %B %Y')
-        else:
+        except ValueError:
             last_date = None
         
         # Add the job opportunity to the list
