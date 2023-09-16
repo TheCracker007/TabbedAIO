@@ -3,8 +3,6 @@ from bs4 import BeautifulSoup
 import streamlit as st
 from datetime import datetime
 
-st.set_page_config(layout="wide")
-
 def main():
     st.title("Latest Notification")
 
