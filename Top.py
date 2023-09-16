@@ -5,7 +5,7 @@ from tab3 import main as main_tab3
 from tab4 import main as main_tab4
 
 # Set the page layout to wide mode
-#st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 
 tab = st.sidebar.radio("Content", ("Source 1", "Source 2", "Source 3", "Source 4"))
 
@@ -17,5 +17,3 @@ elif tab == "Source 3":
     main_tab3()
 elif tab == "Source 4":
     main_tab4()
-
-# ... (rest of your script)
