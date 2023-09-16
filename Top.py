@@ -7,13 +7,16 @@ from tab4 import main as main_tab4
 # Set the page layout to wide mode
 st.set_page_config(layout="wide")
 
-tab = st.sidebar.radio("Content", ("Source 1", "Source 2", "Source 3", "Source 4"))
+st.title("All Content")
 
-if tab == "Source 1":
-    main_tab1()
-elif tab == "Source 2":
-    main_tab2()
-elif tab == "Source 3":
-    main_tab3()
-elif tab == "Source 4":
-    main_tab4()
+st.header("Tab 1")
+main_tab1()
+
+st.header("Tab 2")
+main_tab2()
+
+st.header("Tab 3")
+main_tab3()
+
+st.header("Tab 4")
+main_tab4()
