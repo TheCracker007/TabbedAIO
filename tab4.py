@@ -47,7 +47,7 @@ def main():
     jobs.sort(key=lambda x: x['last_date'] or datetime.max, reverse=True)
 
     # Create the table header
-    table = '| Job Title | Number of Posts | Last Date | Link |\n'
+    table = '| Job Title | Vacancies | Last Date | Link |\n'
     table += '| --- | --- | --- | --- |\n'
 
     # Add the rows to the table
