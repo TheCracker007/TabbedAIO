@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def main():
     st.title("Latest Notification")
@@ -28,23 +28,25 @@ def main():
         num_posts = ' '.join(split_title[-2:]) if len(split_title) > 2 else ''
         
         # Extract the last date from the job details
-        last_date_str = job_details.replace('Last Date:', '').strip()
+        last_date_str = job_details.replace('Last Date:', '').replace('(', '').replace(')', '').strip()
         try:
             last_date = datetime.strptime(last_date_str, '%d %B %Y')
         except ValueError:
             last_date = None
-        
-        # Add the job opportunity to the list
-        jobs.append({
-            'title': title,
-            'num_posts': num_posts,
-            'last_date': last_date,
-            'last_date_str': last_date_str,
-            'job_link': job_link
-        })
 
-    # Sort the jobs by last date in descending order
-    jobs.sort(key=lambda x: x['last_date'] or datetime.max, reverse=True)
+        # Check if last date is not None and is greater than or equal to yesterday's date
+        if last_date and last_date >= datetime.now() - timedelta(days=1):
+            # Add the job opportunity to the list
+            jobs.append({
+                'title': title,
+                'num_posts': num_posts,
+                'last_date': last_date,
+                'last_date_str': last_date_str,
+                'job_link': job_link
+            })
+
+    # Sort the jobs by last date in ascending order
+    jobs.sort(key=lambda x: x['last_date'] or datetime.max, reverse=False)
 
     # Create the table header
     table = '| Job Title | Vacancies | Last Date | Link |\n'
