@@ -34,8 +34,8 @@ def main():
         except ValueError:
             last_date = None
 
-        # Check if last date is not None and is greater than or equal to yesterday's date
-        if last_date and last_date >= datetime.now() - timedelta(days=1):
+        # Check if last date is not None and is on or after yesterday's date
+        if last_date and (last_date == datetime.now().date() or last_date == datetime.now().date() - timedelta(days=1)):
             # Add the job opportunity to the list
             jobs.append({
                 'title': title,
@@ -58,3 +58,6 @@ def main():
 
     # Display the table in Streamlit
     st.markdown(table, unsafe_allow_html=True)
+
+# Run the main function
+main()
