@@ -34,6 +34,9 @@ def main():
         except ValueError:
             last_date = None
 
+        # Debug print to check the last_date values
+        print(f"Last Date: {last_date}, Today: {datetime.now().date()}, Yesterday: {datetime.now().date() - timedelta(days=1)}")
+
         # Check if last date is not None and is on or after today's date minus 1 day
         if last_date and (last_date == datetime.now().date() or last_date == datetime.now().date() - timedelta(days=1)):
             # Add the job opportunity to the list
@@ -58,3 +61,6 @@ def main():
 
     # Display the table in Streamlit
     st.markdown(table, unsafe_allow_html=True)
+
+# Run the main function
+main()
