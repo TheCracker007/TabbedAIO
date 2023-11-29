@@ -34,8 +34,8 @@ def main():
         except ValueError:
             last_date = None
 
-        # Check if last date is not None and is less than or equal to yesterday's date
-        if last_date and last_date <= datetime.now() - timedelta(days=1):
+        # Check if last date is not None and is greater than today's date
+        if last_date and last_date > datetime.now():
             # Add the job opportunity to the list
             jobs.append({
                 'title': title,
