@@ -30,12 +30,12 @@ def main():
         # Extract the last date from the job details
         last_date_str = job_details.replace('Last Date:', '').replace('(', '').replace(')', '').strip()
         try:
-            last_date = datetime.strptime(last_date_str, '%d %B %Y')
+            last_date = datetime.strptime(last_date_str, '%d %B %Y').date()
         except ValueError:
             last_date = None
 
-        # Check if last date is not None and is on or after yesterday's date
-        if last_date and (last_date == datetime.now().date() or last_date == datetime.now().date() - timedelta(days=1)):
+        # Check if last date is not None and is today or yesterday
+        if last_date and (last_date == datetime.now().date() or last_date == (datetime.now() - timedelta(days=1)).date()):
             # Add the job opportunity to the list
             jobs.append({
                 'title': title,
