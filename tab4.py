@@ -28,7 +28,7 @@ def main():
         num_posts = ' '.join(split_title[-2:]) if len(split_title) > 2 else ''
         
         # Extract the last date from the job details
-        last_date_str = job_details.replace('Last Date:', '').strip()
+        last_date_str = job_details.replace('Last Date:', '').replace('(', '').replace(')', '').strip()
         try:
             last_date = datetime.strptime(last_date_str, '%d %B %Y')
         except ValueError:
