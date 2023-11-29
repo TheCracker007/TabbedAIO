@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def main():
     st.title("Latest Notification")
@@ -33,17 +33,15 @@ def main():
             last_date = datetime.strptime(last_date_str, '%d %B %Y')
         except ValueError:
             last_date = None
-
-        # Check if last date is not None and is greater than or equal to yesterday's date
-        if last_date and last_date >= datetime.now() - timedelta(days=1):
-            # Add the job opportunity to the list
-            jobs.append({
-                'title': title,
-                'num_posts': num_posts,
-                'last_date': last_date,
-                'last_date_str': last_date_str,
-                'job_link': job_link
-            })
+        
+        # Add the job opportunity to the list
+        jobs.append({
+            'title': title,
+            'num_posts': num_posts,
+            'last_date': last_date,
+            'last_date_str': last_date_str,
+            'job_link': job_link
+        })
 
     # Sort the jobs by last date in ascending order
     jobs.sort(key=lambda x: x['last_date'] or datetime.max, reverse=False)
