@@ -56,7 +56,7 @@ def main():
             return datetime.min  # Return a very old date
 
     def sort_by_last_date(data):
-        return sorted(data, key=lambda x: parse_date(x[1]), reverse=True)
+        return sorted(data, key=lambda x: parse_date(x[1]), reverse=False)
 
     base_url = "https://allgovernmentjobs.in/latest-government-jobs"
     num_pages = 25  # Set the number of pages you want to scrape
