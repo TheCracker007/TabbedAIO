@@ -77,20 +77,3 @@ def main():
     # Display the data in a Streamlit app
     st.title('Latest Government Jobs')
     st.table(sorted_data)
-
-    def highlight_today(row):
-        today = datetime.now().strftime('%d - %b - %Y')
-        return ['background-color: yellow' if row['Last Date'] == today else '' for _ in row]
-
-    # Create a DataFrame from the sorted data
-    df = pd.DataFrame(sorted_data, columns=headers)
-
-    # Apply the highlight function to the DataFrame
-    df_style = df.style.apply(highlight_today, axis=1)
-
-    # Display the data in a Streamlit app
-    st.title('Latest Government Jobs')
-    st.dataframe(df_style)
-
-if __name__ == '__main__':
-    main()
