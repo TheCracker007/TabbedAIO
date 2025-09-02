@@ -1,5 +1,3 @@
-only make few changes to this below code to fix :
-
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
