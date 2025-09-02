@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 
 def fetch_jobs():
-    api_key = "YOUR_SCRAPINGANT_API_KEY"  # replace with your key
+    api_key = "762ca47deab845f8a88b16d0cce54e03"  # replace with your key
     url = "https://www.careerpower.in/government-jobs.html"
 
     api_url = f"https://api.scrapingant.com/v2/general?url={url}&x-api-key={api_key}"
