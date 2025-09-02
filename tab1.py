@@ -4,11 +4,10 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
 
-def main():   # 👈 this MUST exist
-
+@st.cache_data(ttl=21600)  # cache for 6 hours (21600 seconds)
+def fetch_jobs():
     def extract_data(html_content):
         soup = BeautifulSoup(html_content, 'html.parser')
-
         data = []
         table = soup.find('table')
         if not table:
@@ -24,11 +23,7 @@ def main():   # 👈 this MUST exist
 
         df = pd.DataFrame(data, columns=['Recruitment Names', 'Last Date'])
         df['Last Date'] = pd.to_datetime(df['Last Date'], format='%dth %B %Y', errors='coerce')
-        df_sorted = df.sort_values(by='Last Date', ascending=False)
-        return df_sorted
-
-    def format_last_date(date):
-        return date.strftime('%d %B %Y') if not pd.isnull(date) else ''
+        return df.sort_values(by='Last Date', ascending=False)
 
     api_key = "762ca47deab845f8a88b16d0cce54e03"
     target_url = "https://www.careerpower.in/government-jobs.html"
@@ -37,13 +32,20 @@ def main():   # 👈 this MUST exist
     response = requests.get(api_url)
     html_content = response.text
 
-    df_sorted = extract_data(html_content)
+    return extract_data(html_content)
+
+def main():
+    st.title('Government Job Recruitments')
+
+    df_sorted = fetch_jobs()
     if df_sorted.empty:
         st.error("⚠ Could not extract jobs data")
         return
 
+    def format_last_date(date):
+        return date.strftime('%d %B %Y') if not pd.isnull(date) else ''
+
     df_sorted['Last Date'] = df_sorted['Last Date'].apply(format_last_date)
     df_sorted[['Recruitment', 'Posts']] = df_sorted['Recruitment Names'].str.split(' for ', expand=True)
 
-    st.title('Government Job Recruitments')
     st.dataframe(df_sorted[['Recruitment', 'Posts', 'Last Date']], height=800)
