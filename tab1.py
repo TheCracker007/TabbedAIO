@@ -24,10 +24,7 @@ def fetch_jobs():
                 link_tag = cols[0].find("a")
                 link = link_tag["href"] if link_tag and link_tag.has_attr("href") else ""
 
-                # Emoji link as markdown
-                link_md = f"[🔗]({link})" if link else ""
-
-                data.append((recruitment_name, last_date, link_md))
+                data.append((recruitment_name, last_date, link))
 
         df = pd.DataFrame(data, columns=['Recruitment Names', 'Last Date', 'Link'])
         df['Last Date'] = pd.to_datetime(df['Last Date'], format='%dth %B %Y', errors='coerce')
@@ -61,5 +58,13 @@ def main():
     # Reorder for display
     df_display = df_sorted[['Recruitment', 'Posts', 'Last Date', 'Link']]
 
-    # Render full table in long mode (no scroll box)
-    st.table(df_display)
+    # Show interactive table (tall height, no scroll box feel)
+    st.data_editor(
+        df_display,
+        use_container_width=True,
+        hide_index=True,
+        height=2000,  # Adjust as needed (taller = fewer scrollbars)
+        column_config={
+            "Link": st.column_config.LinkColumn("Details", display_text="🔗"),
+        }
+    )
