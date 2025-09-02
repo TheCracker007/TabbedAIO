@@ -58,10 +58,12 @@ def main():
     # Reorder for display
     df_display = df_sorted[['Recruitment', 'Posts', 'Last Date', 'Link']]
 
-    # Show dataframe with clickable link column + autosize
-    st.dataframe(
+    # ✅ Interactive sortable table with clickable links
+    st.data_editor(
         df_display,
         use_container_width=True,
+        hide_index=True,
+        disabled=True,  # makes it read-only
         column_config={
             "Link": st.column_config.LinkColumn("Link to Post", display_text="🔗"),
         }
