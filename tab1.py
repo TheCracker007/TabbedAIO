@@ -45,7 +45,16 @@ def main():
         return date.strftime('%d %B %Y') if not pd.isnull(date) else ''
 
     url = "https://www.careerpower.in/government-jobs.html"
-    response = requests.get(url)
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/118.0.0.0 Safari/537.36"
+        )
+    }
+
+    response = requests.get(url, headers=headers)
     html_content = response.content
 
     df_sorted = extract_data(html_content)
