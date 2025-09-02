@@ -1,48 +1,62 @@
+import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import streamlit as st
+import time
+from datetime import datetime
 
-def fetch_jobs():
-    api_key = "762ca47deab845f8a88b16d0cce54e03"  # replace with your key
-    url = "https://www.careerpower.in/government-jobs.html"
+def main():
 
-    api_url = f"https://api.scrapingant.com/v2/general?url={url}&x-api-key={api_key}"
+    def extract_data(html_content):
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        data = []
+        table = soup.find('table')
+        if not table:
+            return pd.DataFrame()
+
+        rows = table.find_all('tr')
+        for row in rows[1:]:
+            cols = row.find_all('td')
+            if len(cols) >= 3:
+                recruitment_name = cols[0].get_text(strip=True)
+                last_date = cols[2].get_text(strip=True)
+                data.append((recruitment_name, last_date))
+
+        df = pd.DataFrame(data, columns=['Recruitment Names', 'Last Date'])
+        df['Last Date'] = pd.to_datetime(df['Last Date'], format='%dth %B %Y', errors='coerce')
+        df_sorted = df.sort_values(by='Last Date', ascending=False)
+
+        return df_sorted
+
+    def format_last_date(date):
+        return date.strftime('%d %B %Y') if not pd.isnull(date) else ''
+
+    # Use ScrapingAnt API instead of direct request
+    api_key = "762ca47deab845f8a88b16d0cce54e03"  # <-- replace with your real key
+    target_url = "https://www.careerpower.in/government-jobs.html"
+    api_url = f"https://api.scrapingant.com/v2/general?url={target_url}&x-api-key={api_key}"
+
     response = requests.get(api_url)
+    html_content = response.text
 
-    if response.status_code != 200:
-        st.error(f"Failed to fetch jobs data (status: {response.status_code})")
-        return pd.DataFrame()
+    df_sorted = extract_data(html_content)
+    if df_sorted.empty:
+        st.error("⚠ Could not extract jobs data")
+        return
 
-    soup = BeautifulSoup(response.text, "html.parser")
+    df_sorted['Last Date'] = df_sorted['Last Date'].apply(format_last_date)
+    df_sorted[['Recruitment', 'Posts']] = df_sorted['Recruitment Names'].str.split(' for ', expand=True)
 
-    heading = soup.find("h2", string=lambda t: t and "Latest Govt Jobs 2025" in t)
-    table = heading.find_next("table") if heading else None
+    st.title('Government Job Recruitments')
+    st.dataframe(df_sorted[['Recruitment', 'Posts', 'Last Date']], height=800)
 
-    if not table:
-        st.warning("⚠ Jobs table not found")
-        return pd.DataFrame()
-
-    rows = table.find_all("tr")
-    data = []
-    for row in rows[1:]:
-        cols = row.find_all("td")
-        if len(cols) >= 3:
-            recruitment = cols[0].get_text(strip=True)
-            start = cols[1].get_text(strip=True)
-            last = cols[2].get_text(strip=True)
-            link_tag = cols[0].find("a")
-            link = link_tag["href"] if link_tag and link_tag.has_attr("href") else ""
-            data.append((recruitment, start, last, link))
-
-    return pd.DataFrame(data, columns=["Recruitment Names", "Start Date", "Last Date", "Link"])
-
-
-# Streamlit UI
-st.header("Government Jobs - CareerPower.in")
-
-df = fetch_jobs()
-if not df.empty:
-    st.dataframe(df, use_container_width=True)
-else:
-    st.info("No jobs available right now")
+    # Refresh loop (optional: can be removed if not needed)
+    while False:  # set to True if you want background refresh inside Streamlit (not recommended)
+        time.sleep(600)  # Sleep for 10 minutes
+        response = requests.get(api_url)
+        html_content = response.text
+        df_sorted = extract_data(html_content)
+        df_sorted['Last Date'] = df_sorted['Last Date'].apply(format_last_date)
+        df_sorted[['Recruitment', 'Posts']] = df_sorted['Recruitment Names'].str.split(' for ', expand=True)
+        st.dataframe(df_sorted[['Recruitment', 'Posts', 'Last Date']], height=800)
