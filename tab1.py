@@ -20,7 +20,7 @@ def fetch_jobs():
                 recruitment_name = cols[0].get_text(strip=True)
                 last_date = cols[2].get_text(strip=True)
 
-                # Extract link
+                # Try to extract link
                 link_tag = cols[0].find("a")
                 link = link_tag["href"] if link_tag and link_tag.has_attr("href") else ""
 
@@ -55,15 +55,7 @@ def main():
     # Split Recruitment into "Recruitment" and "Posts"
     df_sorted[['Recruitment', 'Posts']] = df_sorted['Recruitment Names'].str.split(' for ', expand=True)
 
-    # Reorder for display
+    # Reorder columns for display
     df_display = df_sorted[['Recruitment', 'Posts', 'Last Date', 'Link']]
 
-    # ✅ Interactive sortable table with clickable links
-    st.data_editor(
-        df_display,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Link": st.column_config.LinkColumn("Details", display_text="🔗"),
-        }
-    )
+    st.dataframe(df_display, height=800)
