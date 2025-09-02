@@ -9,10 +9,12 @@ def main():
         soup = BeautifulSoup(html_content, 'html.parser')
 
         data = []
-        # Locate the right table inside <figure class="table">
-        table = soup.select_one("figure.table table")
+        # Find the heading "Latest Govt Jobs 2025" and then its following table
+        heading = soup.find("h2", string=lambda t: t and "Latest Govt Jobs 2025" in t)
+        table = heading.find_next("table") if heading else None
+
         if not table:
-            return pd.DataFrame(columns=['Recruitment Names', 'Start Date', 'Last Date'])
+            return pd.DataFrame(columns=['Recruitment Names', 'Start Date', 'Last Date', 'Link'])
 
         rows = table.find_all('tr')
 
@@ -23,19 +25,19 @@ def main():
                 start_date = cols[1].get_text(strip=True)
                 last_date = cols[2].get_text(strip=True)
 
-                # Get link if available
+                # Extract link if present
                 link = cols[0].find("a")["href"] if cols[0].find("a") else ""
 
                 data.append((recruitment_name, start_date, last_date, link))
 
         df = pd.DataFrame(data, columns=['Recruitment Names', 'Start Date', 'Last Date', 'Link'])
 
-        # Clean up dates like "23rd August 2025"
+        # Clean date strings like "23rd August 2025"
         for col in ['Start Date', 'Last Date']:
             df[col] = df[col].str.replace(r'(st|nd|rd|th)', '', regex=True)
             df[col] = pd.to_datetime(df[col], format='%d %B %Y', errors='coerce')
 
-        # Sort by Last Date (descending)
+        # Sort by Last Date (latest first)
         df_sorted = df.sort_values(by='Last Date', ascending=False)
         return df_sorted
 
@@ -48,9 +50,9 @@ def main():
 
     df_sorted = extract_data(html_content)
 
-    # Reformat dates back to strings for display
-    df_sorted['Start Date'] = df_sorted['Start Date'].apply(format_date)
-    df_sorted['Last Date'] = df_sorted['Last Date'].apply(format_date)
+    # Convert datetime back to formatted string for display
+    for col in ['Start Date', 'Last Date']:
+        df_sorted[col] = df_sorted[col].apply(format_date)
 
     st.title('Latest Govt Jobs 2025')
     st.dataframe(df_sorted[['Recruitment Names', 'Start Date', 'Last Date']], height=800)
