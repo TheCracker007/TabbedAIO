@@ -30,7 +30,7 @@ def fetch_jobs():
         df['Last Date'] = pd.to_datetime(df['Last Date'], format='%dth %B %Y', errors='coerce')
         return df.sort_values(by='Last Date', ascending=False)
 
-    api_key = "YOUR_SCRAPINGANT_API_KEY"
+    api_key = "762ca47deab845f8a88b16d0cce54e03"
     target_url = "https://www.careerpower.in/government-jobs.html"
     api_url = f"https://api.scrapingant.com/v2/general?url={target_url}&x-api-key={api_key}"
 
