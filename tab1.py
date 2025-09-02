@@ -63,8 +63,7 @@ def main():
         df_display,
         use_container_width=True,
         hide_index=True,
-        disabled=True,  # makes it read-only
         column_config={
-            "Link": st.column_config.LinkColumn("Link to Post", display_text="🔗"),
+            "Link": st.column_config.LinkColumn("Details", display_text="🔗"),
         }
     )
